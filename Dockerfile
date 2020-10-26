@@ -23,7 +23,7 @@ RUN yum -y update --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-
 # TO DO: For now this script copies the full RPM and renames to /tmp/falcon-agent.rpm. This should be
 #        changed to a parameter at some point.
 #
-COPY ./falcon-sensor-5.33.0-9808.el8.x86_64.rpm /tmp/falcon-agent.rpm
+COPY ./falcon-sensor-5.43.0-10803.el8.x86_64.rpm /tmp/falcon-agent.rpm
 RUN yum -y install --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos /tmp/falcon-agent.rpm && yum -y clean all && rm -rf /var/cache/yum && rm /tmp/falcon-agent.rpm
 
 #
