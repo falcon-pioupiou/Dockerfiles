@@ -55,7 +55,7 @@ module over netlink and to Cloudsim over localhost. Host `pid`, `uts` and
 host resources. Following additional host files and directories need to be
 provided to the sensor by mounting them within the container:
 
-```bash
+```shell
 /var/run/docker.sock    # for the sensor to query Docker engine
 /var/log                # for logs
 /etc/os-release         # or its equivalent based on the distro
@@ -103,6 +103,25 @@ $ docker exec -it $CONTAINER_ID falconctl -g --trace
 
 ## Post-build Actions
 Push the image to a registry (like ECR) if the container needs to be accessed outside of the build host.
+
+For example, if pushing to a private DockerHub registry:
+
+1) Retrieve the ``IMAGE ID`` of your newly created container.
+```shell
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+falcon-sensor       latest              6fd0819e777d        4 days ago          242MB
+```
+
+2) Tag your local image, replacing ``6fd0819e777d`` with your ``IMAGE ID``, and ``yourDockerHubAccount/yourPrivateRepo`` with your DockerHub information.
+```shell
+$ docker tag 6fd0819e777d yourDockerHubAccount/yourPrivateRepo:latest
+```
+
+3) Push to DockerHub.
+```bash
+$ docker push yourDockerHubAccount/yourPrivateRepo
+```
 
 ## Many Thanks
 Thank you to [Dinesh Subhraveti](https://www.linkedin.com/in/subhraveti/) whose initial code inspired this repo!
