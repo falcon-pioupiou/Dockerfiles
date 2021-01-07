@@ -2,29 +2,19 @@
 This project helps build the scaffolding for customers to containerize their falcon sensor.
 
 ## Pre-Launch Checklist
-* Install `docker` if not already present on the build host. In theory 
-[podman](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/) should be
-a drop-in replacement for development on Linux hosts, but has not yet been tested.
+* Install `docker` or `podman` if not already present on the build host. The following instructions use `docker` commands, but `podman` commands work just fine as well.
 
 * Your CrowdStrike Customer ID (CID) is required to ensure the container associates itself with your account upon launch. Your CID can be found at [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads).
 
-* Update entrypoint.sh with your CID, e.g.:
+* Update entrypoint.sh with your CID if you wish to hard-code your CID, e.g.:
   ```console
   CLOUDSIM_CID="YOURCID"
   ```
 
-  This could be replaced with a sed one-liner such as ``sed -i 's/YOURCID/xyz/r' entrypoint.sh``. Try not to commit your CID to your Git repo! 
+  This could be replaced with a sed one-liner such as ``sed -i 's/YOURCID/xyz/r' entrypoint.sh``. Try not to commit your CID to your Git repo!
+  Alternatively, using `-e FALCONCTL_OPT_CID=<<YOUR CID>>` when running the container detached (when the `-d` argument is used. See below) is easier rather than hard-coding your CID and creating a new container image.
 
-* Download the RHEL/CentOS/Oracle 8 sensor from [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads) and place into this directory. The ``Dockerfile`` references this file and copies it into the container during ``docker build``:
-
-  ```shell
-  COPY ./falcon-sensor-5.33.0-9808.el8.x86_64.rpm /tmp/falcon-agent.rpm
-
-  RUN yum -y install --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos /tmp/falcon-agent.rpm && yum -y clean all && rm -rf /var/cache/yum && rm /tmp/falcon-agent.rpm 
-  ```
-
-  At some point we'll parameterize the RPM name.
-
+* Download the RHEL/CentOS/Oracle 8 sensor from [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads) and place into this directory. The ``Dockerfile`` references this file and copies it into the container during ``docker build`` through the build argument `FALCON_RPM`.
 
 ## Build
 Build the container using the [included Dockerfile](https://github.com/CrowdStrike/dockerfiles/blob/master/Dockerfile) through a command such as:
@@ -33,6 +23,7 @@ Build the container using the [included Dockerfile](https://github.com/CrowdStri
 $ docker build --no-cache=true \
 --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 --build-arg VCS_REF=$(git rev-parse --short HEAD) \
+--build-arg FALCON_RPM=falcon-sensor-5.33.0-9808.el8.x86_64.rpm
 -t falcon-sensor:latest .
 ```
 
@@ -92,7 +83,7 @@ $ CONTAINER_ID=$(docker run -d \
 -v /var/log:/var/log falcon-sensor)
 ```
 
-Replace ``<<your CID>>`` with your CrowdStrike Customer ID (CID). This can be found at [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads). 
+Replace ``<<your CID>>`` with your CrowdStrike Customer ID (CID). This can be found at [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads).
 
 ### Running `falconctl`
 `falconctl` can be invoked inside a running sensor container with `docker exec`:
