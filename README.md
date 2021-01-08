@@ -2,7 +2,7 @@
 This project helps build the scaffolding for customers to containerize their falcon sensor.
 
 ## Pre-Launch Checklist
-* Install `docker` or `podman` if not already present on the build host. The following instructions use `docker` commands, but `podman` commands work just fine as well.
+* Install `docker` or `podman` if not already present on the build host. The following instructions use `docker` commands, but `podman` commands [work just fine as well](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/).
 
 * Your CrowdStrike Customer ID (CID) is required to ensure the container associates itself with your account upon launch. Your CID can be found at [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads).
 
