@@ -3,7 +3,7 @@
 # base operating system image purpose built for containers. For more information
 # see https://developers.redhat.com/products/rhel/ubi
 #
-FROM registry.access.redhat.com/ubi8/ubi
+FROM registry.access.redhat.com/ubi8/ubi:8.1
 USER root
 
 #
@@ -24,7 +24,7 @@ RUN yum -y update --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-
 #        changed to a parameter at some point.
 #
 COPY ./falcon-sensor-6.14.0-11150.el8.x86_64.rpm /tmp/falcon-agent.rpm
-RUN yum -y install --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos libnl /tmp/falcon-agent.rpm && yum -y clean all && rm -rf /var/cache/yum && rm /tmp/falcon-agent.rpm
+RUN yum -y install --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos libnl3 net-tools zip openssl hostname iproute /tmp/falcon-agent.rpm && yum -y clean all && rm -rf /var/cache/yum && rm /tmp/falcon-agent.rpm
 
 #
 # Copy the entrypoint script into the container and make sure
