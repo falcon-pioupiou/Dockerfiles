@@ -4,6 +4,7 @@
 # see https://developers.redhat.com/products/rhel/ubi
 #
 FROM registry.access.redhat.com/ubi8/ubi:8.1
+USER root
 
 ARG container_version
 
