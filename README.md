@@ -23,7 +23,7 @@ Build the container using the [included Dockerfile](https://github.com/CrowdStri
 $ docker build --no-cache=true \
 --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 --build-arg VCS_REF=$(git rev-parse --short HEAD) \
---build-arg FALCON_RPM=falcon-sensor-5.33.0-9808.el8.x86_64.rpm
+--build-arg FALCON_RPM=falcon-sensor-5.33.0-9808.el8.x86_64.rpm \
 -t falcon-sensor:latest .
 ```
 
