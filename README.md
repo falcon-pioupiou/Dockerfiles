@@ -14,7 +14,7 @@ This project helps build the scaffolding for customers to containerize their fal
   This could be replaced with a sed one-liner such as ``sed -i 's/YOURCID/xyz/r' entrypoint.sh``. Try not to commit your CID to your Git repo!
   Alternatively, using `-e FALCONCTL_OPT_CID=<<YOUR CID>>` when running the container detached (when the `-d` argument is used. See below) is easier rather than hard-coding your CID and creating a new container image.
 
-* Download the RHEL/CentOS/Oracle 8 sensor from [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads) and place into this directory. The ``Dockerfile`` references this file and copies it into the container during ``docker build`` through the build argument `FALCON_RPM`.
+* Download the RHEL/CentOS/Oracle 8 sensor from [https://falcon.crowdstrike.com/hosts/sensor-downloads](https://falcon.crowdstrike.com/hosts/sensor-downloads) and place into this directory. The ``Dockerfile`` references this file and copies it into the container during ``docker build`` through the build argument `FALCON_PKG`.
 
 ## Build
 Build the container using the [included Dockerfile](https://github.com/CrowdStrike/dockerfiles/blob/master/Dockerfile) through a command such as:
@@ -23,7 +23,7 @@ Build the container using the [included Dockerfile](https://github.com/CrowdStri
 $ docker build --no-cache=true \
 --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 --build-arg VCS_REF=$(git rev-parse --short HEAD) \
---build-arg FALCON_RPM=falcon-sensor-5.33.0-9808.el8.x86_64.rpm \
+--build-arg FALCON_PKG=falcon-sensor-5.33.0-9808.el8.x86_64.rpm \
 -t falcon-sensor:latest .
 ```
 
