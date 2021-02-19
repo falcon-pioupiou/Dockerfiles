@@ -35,7 +35,7 @@ LABEL maintainer="https://github.com/CrowdStrike/dockerfiles/" \
 
 #
 # 1. Apply updates to base image and install dependencies
-# 2. Copy Falcon Agent RPM into container & install it, then remove the RPM
+# 2. Copy Falcon Agent DEB into container & install it, then remove the DEB
 #
 COPY ./$FALCON_PKG /tmp/falcon-sensor.deb
 RUN apt-get -y update && \
@@ -48,11 +48,10 @@ RUN apt-get -y update && \
 # Copy the entrypoint script into the container and make sure
 # that its executable. Add the symlink for backwards compatability
 #
-COPY entrypoint.sh /usr/local/bin/
-RUN ln -s /usr/local/bin/entrypoint.sh /
+COPY entrypoint.sh /
 
 ENV PATH ".:/bin:/usr/bin:/sbin:/usr/sbin"
 WORKDIR /opt/CrowdStrike
 
 VOLUME /var/log
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
