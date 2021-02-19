@@ -14,7 +14,7 @@ ARG BUILD_DATE
 # VCS_REF=$(git rev-parse --short HEAD)
 ARG VCS_REF
 
-ARG FALCON_RPM
+ARG FALCON_PKG
 
 #
 # Friendly reminder that generated container images are from an open source
@@ -42,7 +42,7 @@ LABEL maintainer="https://github.com/CrowdStrike/dockerfiles/" \
 # 1. Apply updates to base image and install dependencies
 # 2. Copy Falcon Agent RPM into container & install it, then remove the RPM
 #
-COPY ./$FALCON_RPM /tmp/falcon-sensor.rpm
+COPY ./$FALCON_PKG /tmp/falcon-sensor.rpm
 RUN yum -y update && \
     yum -y install --disablerepo=* \
     --enablerepo=ubi-8-appstream \
@@ -55,11 +55,10 @@ RUN yum -y update && \
 # Copy the entrypoint script into the container and make sure
 # that its executable. Add the symlink for backwards compatability
 #
-COPY entrypoint.sh /usr/local/bin/
-RUN ln -s /usr/local/bin/entrypoint.sh /
+COPY entrypoint.sh /
 
 ENV PATH ".:/bin:/usr/bin:/sbin:/usr/sbin"
 WORKDIR /opt/CrowdStrike
 
 VOLUME /var/log
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
