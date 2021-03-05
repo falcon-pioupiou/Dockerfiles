@@ -37,7 +37,7 @@ LABEL maintainer="https://github.com/CrowdStrike/dockerfiles/" \
 # 1. Apply updates to base image and install dependencies
 # 2. Copy Falcon Agent RPM into container & install it, then remove the RPM
 #
-COPY ./$FALCON_RPM /tmp/falcon-sensor.rpm
+COPY ./$FALCON_PKG /tmp/falcon-sensor.rpm
 COPY ./falcon-sensor.gpg /
 
 RUN rpm --import ./falcon-sensor.gpg && \
