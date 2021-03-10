@@ -26,9 +26,11 @@ opts['--trace']="$FALCONCTL_OPT_TRACE"
 opts['--feature']="$FALCONCTL_OPT_FEATURE"
 opts['--message-log']="$FALCONCTL_OPT_MESSAGE_LOG"
 opts['--billing']="$FALCONCTL_OPT_BILLING"
+opts['--tags']="$FALCONCTL_OPT_TAGS"
 opts['--assert']="$FALCONCTL_OPT_ASSERT"
 opts['--memfail-grace-period']="$FALCONCTL_OPT_MEMFAIL_GRACE_PERIOD"
 opts['--memfail-every-n']="$FALCONCTL_OPT_MEMFAIL_EVERY_N"
+opts['--provisioning-token']="$FALCONCTL_PROVISIONING_TOKEN"
 
 #
 # Iterate through the ``opts`` array and pull out defined options. Build a unified
