@@ -30,7 +30,7 @@ opts['--tags']="$FALCONCTL_OPT_TAGS"
 opts['--assert']="$FALCONCTL_OPT_ASSERT"
 opts['--memfail-grace-period']="$FALCONCTL_OPT_MEMFAIL_GRACE_PERIOD"
 opts['--memfail-every-n']="$FALCONCTL_OPT_MEMFAIL_EVERY_N"
-opts['--provisioning-token']="$FALCONCTL_PROVISIONING_TOKEN"
+opts['--provisioning-token']="$FALCONCTL_OPT_PROVISIONING_TOKEN"
 
 #
 # Iterate through the ``opts`` array and pull out defined options. Build a unified
