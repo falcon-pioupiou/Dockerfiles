@@ -50,4 +50,10 @@ done
 # we do not want the sensor daemon to initiate, as that would mean the sensor
 # was not properly initiated.
 echo $cmd
+
+# Instead of running a sidecar container for logs, just tail them
+# as background process
+touch /var/log/falcon-sensor.log \
+	&& tail -n1 -f /var/log/falcon-sensor.log &
+
 $cmd && exec $FALCON_SENSOR
