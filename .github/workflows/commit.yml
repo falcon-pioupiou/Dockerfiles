@@ -1,0 +1,43 @@
+name: Update Docker files from template
+
+env:
+  GO111MODULE: on
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 
+      uses: actions/setup-go@v2
+      id: go
+
+    - name: Check out Dockerfile template code into the directory
+      uses: actions/checkout@v2
+      with:
+        repository: "redhatrises/dockerfile-template"
+
+    - name: Install Dockerfile generator
+      run: |
+        go install -v ./...
+
+    - name: Check out code into the directory
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}
+
+    - name: Build Dockerfiles from container.template
+      run: |
+        export PATH=$PATH:$(go env GOPATH)/bin
+        dft version
+        dft generate registry.access.redhat.com/ubi8/ubi:8.4 --template templates/containerfile.template --override-filename Dockerfile
+        dft generate registry.suse.com/suse/sle15:15.2 --template templates/containerfile.template --override-filename-tag
+        dft generate amazonlinux --template templates/containerfile.template
+        dft generate oraclelinux:7 --template templates/containerfile.template --override-filename-tag
+        dft generate registry.suse.com/suse/sle15:15.2 --template templates/containerfile.template --override-filename-tag --override-filename Dockerfile.suse
+        dft generate debian:9 --template templates/containerfile.template --override-filename-tag
+        dft generate ubuntu:20.04 --template templates/containerfile.template --override-filename-tag
