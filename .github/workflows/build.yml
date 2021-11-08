@@ -1,16 +1,18 @@
-name: Update Dockerfiles from template
+name: Build Dockerfiles from template
 
 env:
   GO111MODULE: on
 
 on:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
     paths:
       - 'templates/containerfile.template'
 
 jobs:
-  commit-templates:
+  build:
     runs-on: ubuntu-latest
     steps:
 
@@ -44,14 +46,3 @@ jobs:
         dft generate registry.suse.com/suse/sle15:15.2 --template templates/containerfile.template --override-filename-tag --override-filename Dockerfile.suse
         dft generate debian:9 --template templates/containerfile.template --override-filename-tag
         dft generate ubuntu:20.04 --template templates/containerfile.template --override-filename-tag
-
-    - name: Configure Git 
-      run: |
-        git config user.name "$GITHUB_ACTOR"
-        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-    - name: Update Dockerfiles
-      run: |
-        git add Dockerfile*
-        git commit -m "Updating Dockerfiles on `date +'%Y-%m-%d %H:%M:%S'`"
-        git push
