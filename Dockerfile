@@ -33,10 +33,11 @@ COPY licenses /licenses
 COPY $FALCON_PKG falcon-sensor.rpm
 
 RUN yum -y update && \
-    yum -y install --disablerepo=* \
+    yum -y install \
+    --disablerepo=* \
     --enablerepo=ubi-8-appstream \
     --enablerepo=ubi-8-baseos \
-    yum -y install libnl3 net-tools zip openssl hostname iproute ./falcon-sensor.rpm && \
+    libnl3 net-tools zip openssl hostname iproute ./falcon-sensor.rpm && \
     yum -y clean all && rm -rf /var/cache/yum && \
     rm -f falcon-sensor.rpm
 
