@@ -47,12 +47,13 @@ COPY $FALCON_PKG {{ $pkg }}
 
 {{ if or (contains "amazonlinux" $fullimage) (contains "oraclelinux" $fullimage) (contains "rhel" $fullimage) (eq "ubi" .Name) -}}
 RUN yum -y update && \
+    yum -y install \
 {{- if (eq "ubi" .Name) }}
-    yum -y install --disablerepo=* \
+    --disablerepo=* \
     --enablerepo=ubi-8-appstream \
     --enablerepo=ubi-8-baseos \
 {{- end }}
-    yum -y install libnl3 net-tools zip openssl hostname iproute ./{{ $pkg }} && \
+    libnl3 net-tools zip openssl hostname iproute ./{{ $pkg }} && \
     yum -y clean all && rm -rf /var/cache/yum && \
     rm -f {{ $pkg }}
 {{- end }}
