@@ -17,7 +17,7 @@
 #
 {{- end }}
 FROM {{ $fromimage }}
-MAINTAINER CrowdStrike Solutions Architects <integrations@crowdstrike.com>
+
 USER root
 
 ARG VERSION
@@ -32,12 +32,19 @@ ARG FALCON_PKG
 #
 ### Required OpenShift Labels
 LABEL name="CrowdStrike Falcon Sensor" \
-      maintainer="integrations@crowdstrike.com" \
-      vendor="CrowdStrike Community" \
-      version=$VERSION \
-      release=$VCS_REF \
-      summary="CrowdStrike Falcon Sensor" \
-      description="The falcon-sensor package provides the Crowdstrike Falcon Sensor daemon and kernel modules."
+    maintainer="integrations@crowdstrike.com" \
+    vendor="CrowdStrike Community" \
+    version=$VERSION \
+    release=$VCS_REF \
+    summary="CrowdStrike Falcon Sensor" \
+    description="The falcon-sensor package provides the Crowdstrike Falcon Sensor daemon and kernel modules." \
+    org.opencontainers.image.authors="CrowdStrike Solutions Architects <integrations@crowdstrike.com>" \
+    org.opencontainers.image.vendor="CrowdStrike" \
+    org.opencontainers.image.title="CrowdStrike's Falcon Sensor for Linux" \
+    org.opencontainers.image.description="Containerize the Falcon Sensor for Linux" \
+    org.opencontainers.image.documentation="The falcon-sensor package provides the Crowdstrike Falcon Sensor daemon and kernel modules" \
+    org.opencontainers.image.version=$VERSION \
+    org.opencontainers.image.release=$VCS_REF
 
 ### add licenses to this directory
 COPY licenses /licenses
@@ -48,12 +55,12 @@ COPY $FALCON_PKG {{ $pkg }}
 {{ if or (contains "amazonlinux" $fullimage) (contains "oraclelinux" $fullimage) (contains "rhel" $fullimage) (eq "ubi" .Name) -}}
 RUN yum -y update && \
     yum -y install \
-{{- if (eq "ubi" .Name) }}
-    --disablerepo=* \
+    {{- if (eq "ubi" .Name) }}
+--disablerepo=* \
     --enablerepo=ubi-8-appstream \
     --enablerepo=ubi-8-baseos \
-{{- end }}
-    libnl3 net-tools zip openssl hostname iproute ./{{ $pkg }} && \
+    {{- end }}
+libnl3 net-tools zip openssl hostname iproute ./{{ $pkg }} && \
     yum -y clean all && rm -rf /var/cache/yum && \
     rm -f {{ $pkg }}
 {{- end }}
