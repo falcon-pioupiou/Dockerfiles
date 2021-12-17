@@ -1,4 +1,4 @@
-# Package CrowdStrike's Falcon Linux Sensor as a Container
+# Package CrowdStrike's Falcon Sensor for Linux as a Container
 This project helps build the scaffolding for customers to containerize their falcon sensor.
 
 ## Pre-Launch Checklist
@@ -8,7 +8,7 @@ This project helps build the scaffolding for customers to containerize their fal
 
 * Update entrypoint.sh with your CID if you wish to hard-code your CID, e.g.:
   ```console
-  CLOUDSIM_CID="YOURCID"
+  FALCONCTL_OPT_CID="YOURCID"
   ```
 
   This could be replaced with a sed one-liner such as ``sed -i 's/YOURCID/xyz/r' entrypoint.sh``. Try not to commit your CID to your Git repo!
